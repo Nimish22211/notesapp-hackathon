@@ -1,0 +1,22 @@
+.sidebar{
+    width:300px;
+    height:calc(100vh - 60px);
+    background-color: #eee;
+    position: relative;
+    transition: 500ms;
+}
+.sideIcon{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    color:rgb(83, 82, 82);
+}
+.hidesidebar{
+    width:0;
+    transform:translateX(-50px)
+}
+.sidebar_list{
+    padding:10px
+}
