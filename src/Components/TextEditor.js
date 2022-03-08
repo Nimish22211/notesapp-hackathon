@@ -19,7 +19,7 @@ function TextEditor({ index }) {
         // { console.log(snapshot.data().pages[index].content) }
         // var res = await db.collection('users').doc(currUser.email).get().then(snapshot => snapshot.data().pages[index].content)
         // console.log(res)
-        dispatch(setPageContent({ index, content: convertToRaw(editorState.getCurrentContent()).blocks[0].text }))
+        // dispatch(setPageContent({ index, content: convertToRaw(editorState.getCurrentContent()).blocks[0].text }))
         console.log(currUser)
     }
     return (
