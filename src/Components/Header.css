@@ -34,6 +34,7 @@ header > h1{
     justify-content: center;
     border:1px solid #ccc;
     border-radius: 5px;
+    right:10px;
 }
 .hidden{
     display: none;

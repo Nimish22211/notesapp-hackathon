@@ -1,0 +1,17 @@
+.editor{
+    background-color:#fafafa;
+    padding-bottom: 16px;
+}
+.toolbar{
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    justify-content: center;
+}
+.text-editor{
+    margin-top: 6px;
+    background: white;
+    margin-bottom: 12px;
+    padding:40px 9vw;
+}

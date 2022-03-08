@@ -15,7 +15,7 @@
 }
 .hidesidebar{
     width:0;
-    transform:translateX(-50px)
+    transform:translateX(-200px)
 }
 .sidebar_list{
     padding:10px

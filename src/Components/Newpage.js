@@ -13,10 +13,12 @@ function Newpage() {
     const handleCreate = (e) => {
         e.preventDefault();
         // db.collection('users').doc()
+        let tempInput = input.trim().replace(/\s+/g, '-').toLowerCase();
+
         db.collection('users').doc(currUser.email).update({
-            pages: [...currUser.pages, { title: input, description: desc, content: '' }]
+            pages: [...currUser.pages, { title: tempInput, description: desc, content: '' }]
         })
-        dispatch(addPage({ title: input, description: desc, content: '' }))
+        dispatch(addPage({ title: tempInput, description: desc, content: '' }))
         setInput('');
         setDesc('');
     }
@@ -25,7 +27,7 @@ function Newpage() {
             <h1>Create A New Page</h1>
             <form >
                 <input type="text" placeholder="Page Name" value={input} onChange={(e) => setInput(e.target.value)} />
-                <textarea type="text" placeholder="Page Description" value={desc} onChange={(e) => setDesc(e.target.value)} />
+                <textarea type="text" placeholder="Page Description, NOTE: This is not the actual content of the page" value={desc} onChange={(e) => setDesc(e.target.value)} />
                 <button onClick={handleCreate}>Create</button>
             </form>
         </div>

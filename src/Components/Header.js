@@ -52,12 +52,13 @@ function Header({ openSide, setOpenSide }) {
         setOpenSide(prev => !prev)
         document.querySelector('.sidebar').classList.toggle('hidesidebar');
     }
+    console.log(loggedUser)
     return (
         <header>
             <div className={loggedUser && 'Menu'}>{openSide && <GiHamburgerMenu onClick={handleSideOpen} />}</div>
             <h1 style={loggedUser !== null ? { flex: 0.5 } : { flex: 1, textAlign: 'center' }}><Link to="/">Store your Snippets and Notes All at one place</Link></h1>
             {loggedUser !== null && <div>
-                <img src={loggedUser !== null && loggedUser.providerData[0].photoURL} className="user-photo" alt="user pic"
+                <img src={loggedUser !== null && loggedUser.auth.currentUser.photoURL} className="user-photo" alt="user pic"
                     onClick={handleDropdown} />
                 <div className={dropdown === true ? 'dropdown' : 'dropdown hidden'}>
                     {loggedUser && <button className="Signout" onClick={handleSignOut}>Sign Out</button>}
