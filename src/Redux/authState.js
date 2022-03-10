@@ -13,10 +13,12 @@ const authState = createSlice({
         setCurrUser: (state, action) => {
             state.name = action.payload.name;
             state.email = action.payload.email;
-            state.pages = action.payload.pages;
         },
         addPage: (state, action) => {
             state.pages.push(action.payload);
+        },
+        setPages: (state, action) => {
+            state.pages = action.payload;
         },
         setPageContent: (state, action) => {
             state.pages[action.payload.index].content = action.payload.content;
@@ -27,7 +29,8 @@ const authState = createSlice({
 export const {
     setCurrUser,
     addPage,
-    setPageContent
+    setPageContent,
+    setPages
 } = authState.actions
 
 export const selectAuthState = state => state.authState

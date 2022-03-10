@@ -15,10 +15,13 @@ function Newpage() {
         // db.collection('users').doc()
         let tempInput = input.trim().replace(/\s+/g, '-').toLowerCase();
 
-        db.collection('users').doc(currUser.email).update({
-            pages: [...currUser.pages, { title: tempInput, description: desc, content: '' }]
+        // db.collection('users').doc(currUser.email).update({
+        //     pages: [...currUser.pages, { title: tempInput, description: desc, content: '' }]
+        // })
+        // dispatch(addPage({ title: tempInput, description: desc, content: '' }))
+        db.collection('users').doc(currUser.email).collection('pages').add({
+            title: tempInput, description: desc, content: ''
         })
-        dispatch(addPage({ title: tempInput, description: desc, content: '' }))
         setInput('');
         setDesc('');
     }

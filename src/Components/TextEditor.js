@@ -1,36 +1,50 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Editor } from "react-draft-wysiwyg";
 import './TextEditor.css'
 import { EditorState } from 'draft-js';
-import { useState } from 'react';
 import { db } from '../firebase';
 import { useSelector } from 'react-redux'
 import { selectAuthState, setPageContent } from '../Redux/authState'
 import { convertToRaw, convertFromRaw } from 'draft-js';
 import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom';
 
-function TextEditor({ index }) {
+function TextEditor() {
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const currUser = useSelector(selectAuthState);
+    const [index, setIndex] = useState(0);
     const dispatch = useDispatch();
-    const handleEditorStateChange = async (editorState) => {
+    const { id } = useParams();
+    const currPage = currUser.pages.find(item => item.id === id);
+    useEffect(() => {
+        if (currPage) {
+            setEditorState(EditorState.createWithContent(convertFromRaw(currPage.content)))
+            setIndex(currUser.pages.indexOf(currPage))
+        }
+    }, [id])
+    const handleEditorStateChange = (editorState) => {
         setEditorState(editorState);
-        // { console.log(snapshot.data().pages[index].content) }
-        // var res = await db.collection('users').doc(currUser.email).get().then(snapshot => snapshot.data().pages[index].content)
-        // console.log(res)
-        // dispatch(setPageContent({ index, content: convertToRaw(editorState.getCurrentContent()).blocks[0].text }))
-        console.log(currUser)
+        db.collection('users').doc(currUser.email).collection('pages').doc(id).update({
+            content: convertToRaw(editorState.getCurrentContent())
+        })
+        dispatch(setPageContent({ index, content: convertToRaw(editorState.getCurrentContent()) }))
     }
     return (
-        <div className="editor">
-            <Editor
-                onEditorStateChange={handleEditorStateChange}
-                editorState={editorState}
-                toolbarClassName='toolbar'
-                editorClassName='text-editor'
-            />
-        </div>
+        <section className="page">
+            <div className="page_heading">
+                {currPage && currPage.title}
+                <p>{currPage && currPage.description}</p>
+            </div>
+            <div className="editor">
+                <Editor
+                    onEditorStateChange={handleEditorStateChange}
+                    editorState={editorState}
+                    toolbarClassName='toolbar'
+                    editorClassName='text-editor'
+                />
+            </div>
+        </section>
     )
 }
 

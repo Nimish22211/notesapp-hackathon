@@ -6,7 +6,6 @@ import { selectAuthState } from '../Redux/authState'
 import { useSelector } from 'react-redux'
 function Siderbar({ setOpenSide }) {
     const list = useSelector(selectAuthState)
-    console.log(list.pages)
     const handleSidebar = () => {
         setOpenSide(prev => !prev)
         document.querySelector('.sidebar').classList.toggle('hidesidebar');
@@ -18,7 +17,9 @@ function Siderbar({ setOpenSide }) {
             <ul className="sidebar_list">
                 <li><Link to="/newpage">Add new page</Link></li>
                 {list.pages && list.pages.map((item, index) => {
-                    return <li key={index}><Link to={`/${item.title}`}>{item.title}</Link></li>
+                    let tempTitle = item.title.trim().replace(/\s+/g, '-').toLowerCase();
+
+                    return <li key={index}><Link to={`/${item.id}`}>{item.title}</Link></li>
                 })}
             </ul>
         </div>

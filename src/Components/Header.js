@@ -52,7 +52,6 @@ function Header({ openSide, setOpenSide }) {
         setOpenSide(prev => !prev)
         document.querySelector('.sidebar').classList.toggle('hidesidebar');
     }
-    console.log(loggedUser)
     return (
         <header>
             <div className={loggedUser && 'Menu'}>{openSide && <GiHamburgerMenu onClick={handleSideOpen} />}</div>

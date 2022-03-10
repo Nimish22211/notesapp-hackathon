@@ -10,7 +10,7 @@ import Newpage from './Components/Newpage';
 import { useSelector } from 'react-redux'
 import { selectAuthState } from './Redux/authState'
 import { useDispatch } from 'react-redux'
-import { setCurrUser } from './Redux/authState'
+import { setCurrUser, setPages } from './Redux/authState'
 import TextEditor from './Components/TextEditor';
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -26,14 +26,18 @@ function App() {
       if (loggedUser) {
         setLogged(true);
         db.collection('users').doc(loggedUser.email).get().then(snapshot => (() => {
-          dispatch(setCurrUser({ name: snapshot.data().name, email: snapshot.data().email, pages: snapshot.data().pages }))
-        })()
-        )
+          dispatch(setCurrUser({ name: snapshot.data().name, email: snapshot.data().email }))
+        })())
+        db.collection('users').doc(loggedUser.email).collection('pages').get().then(snapshot =>
+          // dispatch(setPages(snapshot.docs.map(doc => doc.data()))))
+          dispatch(setPages(snapshot.docs.map(doc => { return { title: doc.data().title, content: doc.data().content, id: doc.id, description: doc.data().description } }))))
       } else {
         setLogged(false);
-        dispatch(setCurrUser({ name: '', email: '', pages: [] }))
+        dispatch(setCurrUser({ name: '', email: '' }))
+        dispatch(setPages([]))
       }
     })
+    console.log('render')
   }, [])
   return (
     <div className="App">
@@ -54,17 +58,7 @@ function App() {
             )} />
             <Route path="/login" element={<Login />} />
             <Route path="/newpage" element={<Newpage />} />
-            {redux.pages && redux.pages.map((item, index) => {
-              let tempTitle = item.title.trim().replace(/\s+/g, '-').toLowerCase();
-              // let content = markdown + '\n\n' + item.content
-              return <Route path={`/${tempTitle}`} element={(<section className="page">
-                <div className="page_heading">
-                  {item.title}
-                  <p>{item.description}</p>
-                </div>
-                <TextEditor index={index} />
-              </section>)} />
-            })}
+            <Route path="/:id" element={<TextEditor />} />
           </Routes>
         </div>
       </Router>
